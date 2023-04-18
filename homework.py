@@ -90,12 +90,12 @@ class SportsWalking(Training):
     LEN_STEP: float = 0.65
     M_IN_KM: int = 1000
     COEFF_WEIGHT: float = 0.035
-    SPEED_IN_M_V_S: float = Training.self.speed * 1000 / 3600
-    HEIGHT_IN_M: float = Training.self.height / 100
-
+    SPEED_IN_M_V_S: float = None
+    HEIGHT_IN_M: float = None
+    
     def get_spent_calories(self) -> float:
         self.calories: float = ((self.COEFF_WEIGHT * self.weight +
-                                (self.SPEED_IN_M_V_S**2 / self.HEIGHT_IN_M)
+                                ((self.speed)*1000/3600)**2 / ((self.height) /100)
                                  * 0.029 * self.weight) * self.duration * 60)
 
 
@@ -127,12 +127,18 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    pass
+    workout = {'RUN': Running,
+               'WLK': SportsWalking,
+               'SWM': Swimming}
+    if workout_type in workout:
+        training: Training = workout[workout_type](data)
+        return training
 
 
 def main(training: Training) -> None:
     """Главная функция."""
-    pass
+    info: InfoMessage = Training.show_training_info(training)
+    print(InfoMessage.get_message(info))
 
 
 if __name__ == '__main__':
