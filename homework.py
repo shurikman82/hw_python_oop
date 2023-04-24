@@ -1,21 +1,24 @@
+from dataclasses import dataclass, asdict
+
+
+@dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    def __init__(
-            self, training_type: str, duration: float,
-            distance: float, speed: float,
-            calories: float):
-        self.training_type = training_type
-        self.duration = duration
-        self.distance = distance
-        self.speed = speed
-        self.calories = calories
+    training_type: str
+    duration: float
+    distance: float
+    speed: float
+    calories: float
 
     def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type}; Длительность:'
-                f'{self.duration: .3f} ч.; '
-                f'Дистанция:{self.distance: .3f} км; Ср. скорость:'
-                f'{self.speed: .3f} км/ч;'
-                f' Потрачено ккал:{self.calories: .3f}.')
+        self.message_to_print: str = (
+            'Тип тренировки: {0}; Длительность:'
+            + ' {1:.3f} ч.; '
+            + 'Дистанция: {2:.3f} км; Ср. скорость:'
+            + ' {3:.3f} км/ч;'
+            + ' Потрачено ккал: {4:.3f}.')
+        message_dict: dict = asdict(self)
+        return self.message_to_print.format(*message_dict.values())
 
 
 class Training:
@@ -24,7 +27,9 @@ class Training:
     M_IN_KM: int = 1000
     MINUTE_IN_HOUR: int = 60
 
-    def __init__(self, action: int, duration: float, weight: float) -> None:
+    def __init__(
+            self, action: int, duration: float,
+            weight: float) -> None:
         self.action = action
         self.duration = duration
         self.weight = weight
