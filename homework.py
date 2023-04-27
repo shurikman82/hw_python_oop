@@ -44,8 +44,7 @@ class Training:
 
     def get_spent_calories(self):
         """Получить количество затраченных калорий."""
-        assert 4 == 2
-        print('it is necessary to use a specific type of training')
+        raise Exception('it is necessary to use a specific type of training')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -118,14 +117,16 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list):
     """Прочитать данные полученные от датчиков."""
-    workout: dict = {'RUN': Running,
-                     'WLK': SportsWalking,
-                     'SWM': Swimming}
+    workout: dict = {
+        'RUN': Running,
+        'WLK': SportsWalking,
+        'SWM': Swimming
+    }
     if workout_type in workout:
         some_training = workout[workout_type](*data)
         return some_training
     else:
-        print('incorrect package')
+        raise ValueError('incorrect package')
 
 
 def main(training: Training) -> None:
